@@ -12,3 +12,4 @@ include_directories(${GLFW_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_D
 
 add_executable(Glsl src/main.cpp)
 target_link_libraries(Glsl ${GLFW_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES})
+set_property(TARGET Glsl PROPERTY CXX_STANDARD 17)
