@@ -7,8 +7,9 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <GLFW/glfw3.h>
+#include <math.h>
 
-#include "util.h"
+#include "shader.h"
 
 using namespace std;
 
@@ -38,9 +39,8 @@ int main(int argc, char* args[]) {
         return 1;
     }
     fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
-        
 
-    GLuint prog = createProgram("shaders/test.vert", "shaders/test.frag");
+    Shader shader = Shader("shaders/test.vert", "shaders/test.frag");
 
     int width, height;
     glfwGetFramebufferSize(window, &width, &height);
@@ -73,11 +73,20 @@ int main(int argc, char* args[]) {
 
     glTranslatef(0.0f, 0.0f, -5.0f);
 
+    double mouseX = 0.0;
+    double mouseY = 0.0;
+
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glUseProgram(prog);
+
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+
+        // shader.setFloat("u_time", glfwGetTime());
+        shader.setFloat("u_mouse_x", mouseX);
+        shader.setFloat("u_mouse_y", mouseY);
+        shader.use();
 
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
